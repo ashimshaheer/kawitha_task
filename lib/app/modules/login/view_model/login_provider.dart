@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:kawika_machinetest/app/modules/login/view/login_page.dart';
 
 import '../../../../utils/preference.dart';
 import '../../../helpers/service.dart';
@@ -58,14 +59,17 @@ class LoginProvider extends ChangeNotifier {
     }
   }
 
-  logout({required BuildContext context}) async {
+  logout({required BuildContext context}) {
+    Future.delayed(Duration(milliseconds: 100), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    });
     AppPref.isSignedIn = false;
     AppPref.userToken = '';
     AppPref.refreshToken = '';
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage()),
-    );
+
     notifyListeners();
   }
 }

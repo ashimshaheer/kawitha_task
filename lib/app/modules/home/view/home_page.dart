@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kawika_machinetest/app/modules/login/view_model/login_provider.dart';
-import 'package:kawika_machinetest/app/modules/profille/view/profile_page.dart';
 import 'package:kawika_machinetest/utils/common_widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../../login/view_model/bottom_navigation.dart';
+import '../../profille/view/profile_page.dart';
 import '../view_model/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,21 +24,21 @@ class HomePageBody extends StatefulWidget {
 class _HomePageBodyState extends State<HomePageBody> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeProvider>(builder: (context, obj, _) {
-      return Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            CommonTextWidget(
-              color: Colors.black,
-              text: 'List',
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-            ListView.builder(
+    return Padding(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          CommonTextWidget(
+            color: Colors.black,
+            text: 'List',
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+          Consumer<HomeProvider>(builder: (context, obj, _) {
+            return ListView.builder(
               shrinkWrap: true,
-              itemCount: 5,
+              itemCount: obj.listDatas.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return Container(
@@ -55,13 +55,13 @@ class _HomePageBodyState extends State<HomePageBody> {
                         children: <Widget>[
                           CommonTextWidget(
                             color: Colors.black,
-                            text: 'Name',
+                            text: obj.listDatas[index].name ?? '',
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                           ),
                           CommonTextWidget(
                             color: Colors.black,
-                            text: 'Email',
+                            text: obj.listDatas[index].email ?? '',
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                           ),
@@ -69,7 +69,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                       ),
                       CommonTextWidget(
                         color: Colors.black,
-                        text: 'aakjbsdfffffffffffffffffffffffffffffffafsddddddddd',
+                        text: obj.listDatas[index].body ?? '',
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         maxLines: 3,
@@ -80,11 +80,11 @@ class _HomePageBodyState extends State<HomePageBody> {
                   ),
                 );
               },
-            )
-          ],
-        ),
-      );
-    });
+            );
+          })
+        ],
+      ),
+    );
   }
 
   @override
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.white,
           actions: [
             Consumer<LoginProvider>(builder: (context, obj, _) {
-              return GestureDetector(
+              return InkWell(
                 onTap: () {
                   obj.logout(context: context);
                 },
